@@ -1,15 +1,28 @@
 import React from "react";
 import { MovieItem } from "./MovieItem";
-import { moviesData } from "../moviesData";
 
 class App extends React.Component {
   constructor() {
     super();
 
     this.state = {
-      movies: moviesData,
+      movies: [],
       moviesWillWatch: []
     };
+  }
+  componentDidMount() {
+    fetch(
+      "https://api.themoviedb.org/3/discover/movie?api_key=099e8f5b144f234738ad04710992a158"
+    )
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data);
+        this.setState({
+          movies: data.results
+        });
+      });
   }
   removeMovie = (movie) => {
     const updateMovie = this.state.movies.filter((item) => {
